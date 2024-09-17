@@ -71,18 +71,14 @@ def radixSort(univsize, base, arr):
     k = int(math.log(univsize, base)) + 1
     for i in range(len(arr)):
         arr[i] = (BC(arr[i][0], base, k), arr[i][1])
-
     for j in range(k):
         forSort = []
         for i in range(len(arr)):
             forSort.append((arr[i][0][j], arr[i][0], arr[i][1]))
-        sortedArr = singletonBucketSort(base, forSort)
-        arr = [(item[1], item[2]) for item in sortedArr]  # Reformatting step to maintain structure
-
+        arr = singletonBucketSort(base, forSort)
     for i in range(len(arr)):          
         temp = 0
         for place_value in range(k):
-            temp += arr[i][0][place_value] * (base ** place_value)  # Reconstructing the original number
+            temp += arr[i][place_value] * (base ** place_value)
         arr[i] = (temp, arr[i][1])
-
     return arr
