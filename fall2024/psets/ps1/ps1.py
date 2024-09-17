@@ -79,6 +79,6 @@ def radixSort(univsize, base, arr):
     for i in range(len(arr)):          
         temp = 0
         for place_value in range(k):
-            temp += arr[i][place_value] * (base ** place_value)
+            temp += arr[i][0][place_value] * (base ** place_value)
         arr[i] = (temp, arr[i][1])
     return arr
