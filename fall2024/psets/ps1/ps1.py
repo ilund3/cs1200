@@ -68,4 +68,25 @@ def BC(n, b, k):
 
 def radixSort(univsize, base, arr):
     """TODO: Implement Radix Sort using BC and singletonBucketSort"""
-    return [] 
+    k = int(math.log(univsize, base)) + 1
+
+    BCarr = []
+    for i in range(len(arr)):
+        BCarr.append((BC(arr[i][0], base, k), arr[i][1]))
+
+    for j in range(k):
+        forSort = []
+        for i in range(len(BCarr)):
+            forSort.append((BCarr[i][0][j], BCarr[i][0], BCarr[i][1]))
+        sortedArr = singletonBucketSort(base, forSort)
+        BCarr = [(item[1], item[2]) for item in sortedArr]
+    
+    result = []
+    for i in range(len(BCarr)):          
+        temp = 0
+        digits = BCarr[i][0]
+        for place_value in range(k):
+            temp += digits[place_value] * (base ** place_value)
+        result.append((temp, BCarr[i][1]))
+
+    return result
