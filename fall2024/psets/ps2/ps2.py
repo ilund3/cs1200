@@ -133,19 +133,32 @@ class BinarySearchTree:
         elif child_side == "R":
             child = self.right
 
-        if direction == "R" and child_side == "L":
+        if child is None:
+            return self
+
+        if direction == "R":
             B = child.left
+            if B is None:
+                return self
             child.left = B.right
             B.right = child
-            self.left = B
-        elif direction == "L" and child_side == "R":
+            if child_side == "L":
+                self.left = B
+            elif child_side == "R":
+                self.right = B
+        elif direction == "L":
             B = child.right
+            if B is None:
+                return self
             child.right = B.left
             B.left = child
-            self.right = B
+            if child_side == "L":
+                self.left = B
+            elif child_side == "R":
+                self.right = B
 
         child.size = 1 + (child.left.size if child.left else 0) + (child.right.size if child.right else 0)
-        B.size = B.size = 1 + (B.left.size if B.left else 0) + (B.right.size if B.right else 0)
+        B.size = 1 + (B.left.size if B.left else 0) + (B.right.size if B.right else 0)
 
         return self
 
