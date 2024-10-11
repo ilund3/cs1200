@@ -61,7 +61,7 @@ class BinarySearchTree:
         if left_size > ind and self.left is not None:
             return self.left.select(ind)
         if left_size < ind and self.right is not None:
-            return self.right.select(ind)
+            return self.right.select(ind - left_size - 1)
         return None
 
 
@@ -95,11 +95,12 @@ class BinarySearchTree:
             if self.left is None:
                 self.left = BinarySearchTree(self.debugger)
             self.left.insert(key)
+            self.size += 1
         elif self.key < key:
             if self.right is None:
                 self.right = BinarySearchTree(self.debugger)
             self.right.insert(key)
-        self.calculate_sizes()
+            self.size += 1
         return self
 
     
@@ -127,7 +128,38 @@ class BinarySearchTree:
        11 
     '''
     def rotate(self, direction, child_side):
-        # Your code goes here
+        if child_side == "L":
+            child = self.left
+        elif child_side == "R":
+            child = self.right
+
+        if child is None:
+            return self
+
+        if direction == "R":
+            B = child.left
+            if B is None:
+                return self
+            child.left = B.right
+            B.right = child
+            if child_side == "L":
+                self.left = B
+            elif child_side == "R":
+                self.right = B
+        elif direction == "L":
+            B = child.right
+            if B is None:
+                return self
+            child.right = B.left
+            B.left = child
+            if child_side == "L":
+                self.left = B
+            elif child_side == "R":
+                self.right = B
+
+        child.size = 1 + (child.left.size if child.left else 0) + (child.right.size if child.right else 0)
+        B.size = 1 + (B.left.size if B.left else 0) + (B.right.size if B.right else 0)
+
         return self
 
     def print_bst(self):
